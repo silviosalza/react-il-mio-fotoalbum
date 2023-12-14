@@ -21,20 +21,8 @@ content String @db.Text
 published Boolean @default(false)
 tags Tag[]
 //un post---una categoria---relazione one to many
-categoryId Int?
-//la relation si aggiunge solo in caso di FK
-category Category? @relation(fields: [categoryId] , references: [id], onDelete: Cascade)
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
-}
-
-model Category{
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(30)
-  //una categoria---molti post-- relazione one to many
-  posts Post[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Tag{
