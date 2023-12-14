@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 function NavbarLink({ href, children }) {
   return (
@@ -12,6 +14,8 @@ function NavbarLink({ href, children }) {
 }
 
 export default function Navbar() {
+  const { handleLogout } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-sm shadow-lg ">
       <nav className="py-4">
@@ -23,6 +27,9 @@ export default function Navbar() {
               </li>
               <li>
                 <NavbarLink href="/login">Login</NavbarLink>
+              </li>
+              <li>
+                <NavbarLink onClick={handleLogout}>Logout</NavbarLink>
               </li>
             </ul>
           </div>

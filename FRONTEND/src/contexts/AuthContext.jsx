@@ -20,23 +20,20 @@ export function AuthProvider({ children }) {
   function handleLoginOrRegistration(resp) {
     setUser(resp.user);
     setIsLogged(true);
-
     storeToken(resp.token);
   }
 
   function handleLogout() {
     setUser(null);
     storeToken(null);
-
     localStorage.removeItem("token");
-
     setIsLogged(false);
 
     // prima finisci di fare quello che stai facendo, come update stati e rendering,
     // dopo eseugui la navigazione
     setTimeout(() => {
       navigate("/login");
-    });
+    }, 1000);
   }
 
   function storeToken(token) {
