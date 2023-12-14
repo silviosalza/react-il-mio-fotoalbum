@@ -59,7 +59,6 @@ const newPost = await prisma.post.create({
                 "id": tagId
             }))
         },
-        category:postToAdd?.categoryId
     },
     //specifico quali relazioni includere nella risposta
     include : {
