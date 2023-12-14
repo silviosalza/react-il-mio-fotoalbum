@@ -9,3 +9,49 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+//prisma usa il camel case
+model Post {
+  @@map("Post table")
+id Int @id @default(autoincrement())
+title String @db.VarChar(30)
+slug String? @db.VarChar(60)
+image String? @db.Text
+content String @db.Text
+published Boolean @default(false)
+tags Tag[]
+//un post---una categoria---relazione one to many
+categoryId Int?
+//la relation si aggiunge solo in caso di FK
+category Category? @relation(fields: [categoryId] , references: [id], onDelete: Cascade)
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(30)
+  //una categoria---molti post-- relazione one to many
+  posts Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag{
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(30)
+  posts Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String @unique @db.VarChar(30)
+  email String @unique @db.VarChar(30)
+  role String @default("user")
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
