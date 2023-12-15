@@ -1,6 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, resolvePath } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useContext } from "react";
+import logo from "../assets/logo-victor-morante.svg";
 
 function NavbarLink({ href, children }) {
   return (
@@ -17,20 +18,22 @@ export default function Navbar() {
   const { handleLogout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-sm shadow-lg ">
-      <nav className="py-4">
+    <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-sm shadow-lg ">
+      <nav className="py-2">
         <div className="container px-4 mx-auto flex items-center justify-between">
           <div>
             <ul className="flex">
               <li>
-                <NavbarLink href="/">Home</NavbarLink>
+                <NavbarLink href="/">
+                  <img className="w-40" src={logo} alt="" />
+                </NavbarLink>
               </li>
               <li>
                 <NavbarLink href="/login">Login</NavbarLink>
               </li>
-              <li>
+              {/* <li>
                 <NavbarLink onClick={handleLogout}>Logout</NavbarLink>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

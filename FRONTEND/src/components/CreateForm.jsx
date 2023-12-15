@@ -7,11 +7,11 @@ function CreateForm() {
     content: "",
     image: "",
     published: false,
-    category: [],
+    tags: [],
   };
   //variabili che popolo con la chiamata API
   const [postsList, setPostsList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
+  const [tagsList, setTagsList] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [editingId, setEditingId] = useState("");
   let initiated = false;
@@ -27,7 +27,7 @@ function CreateForm() {
       console.log("formData:", formData);
       const response = await axios.post("http://localhost:3000/posts", {
         ...formData,
-        tags: formData.category, // Adatta il nome del campo se necessario
+        tags: formData.tags, // Adatta il nome del campo se necessario
       });
 
       setPostsList([...postsList, response.data]);
@@ -44,6 +44,7 @@ function CreateForm() {
   function handleEdit(idToEdit) {
     const postToEdit = postsList.find((post) => post.id === idToEdit);
     setEditingId(idToEdit);
+    console.log("Dati del post da editare:", postToEdit);
 
     if (postToEdit) {
       setFormData({
@@ -62,7 +63,7 @@ function CreateForm() {
       title: formData.title,
       content: formData.content,
       image: formData.image,
-      tags: formData.category,
+      tags: formData.tags,
     };
 
     try {
@@ -81,7 +82,7 @@ function CreateForm() {
         title: "",
         content: "",
         image: "",
-        category: [],
+        tags: [],
       });
     }
   }
@@ -114,16 +115,16 @@ function CreateForm() {
   function handleField(e) {
     const { name, value, checked, type } = e.target;
 
-    if (name === "category") {
-      const categoryId = parseInt(value, 10);
-      let updatedCategories = [...formData.category];
+    if (name === "tags") {
+      const tagsId = parseInt(value, 10);
+      let updatedCategories = [...formData.tags];
 
       if (type === "checkbox") {
         if (checked) {
-          updatedCategories.push(categoryId);
+          updatedCategories.push(tagsId);
         } else {
           updatedCategories = updatedCategories.filter(
-            (category) => category !== categoryId
+            (tags) => tags !== tagsId
           );
         }
       }
@@ -138,10 +139,8 @@ function CreateForm() {
   async function fetchData() {
     const postsData = await (await fetch("http://localhost:3000/posts")).json();
     setPostsList(postsData);
-    const categoryData = await (
-      await fetch("http://localhost:3000/tags")
-    ).json();
-    setCategoryList(categoryData);
+    const tagsData = await (await fetch("http://localhost:3000/tags")).json();
+    setTagsList(tagsData);
   }
   //all'avvio dell'applicazione fetchiamo i dati
   useEffect(() => {
@@ -194,17 +193,15 @@ function CreateForm() {
             />
 
             <div className="flex flex-col gap-1">
-              {categoryList.map((cat) => (
+              {tagsList.map((cat) => (
                 <label key={cat.id} className="block font-bold">
                   <input
                     className="mr-3"
-                    name="category"
+                    name="tags"
                     type="checkbox"
                     value={cat.id}
                     onChange={handleField}
-                    checked={
-                      formData.category && formData.category.includes(cat.id)
-                    }
+                    checked={formData.tags && formData.tags.includes(cat.id)}
                   />
                   {cat.name}
                 </label>
@@ -268,7 +265,7 @@ function CreateForm() {
                   </h5>
                   {/* {
                     <h5 className="font-bold">
-                      Categoria: {post.category.name}
+                      Categoria: {post.tags.name}
                     </h5>
                   } */}
                   <img

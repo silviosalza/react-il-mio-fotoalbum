@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import "../css/postList.css";
 export function PostsList() {
   const [postsList, setPostsList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,60 +29,37 @@ export function PostsList() {
 
   return (
     <>
-      <div className="my-5 container mx-auto border-2 border-black">
+      <div className=" container w-3/4 mx-auto">
         <input
+          className="w-full h-12 mb-5 bg-white bg-opacity-20"
           type="text"
           placeholder="Search by title"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <ul>
-          {postsList
-            .filter((post) => post.published)
-            .map((post) => (
-              <li
-                key={post.id}
-                className="flex-wrap mb-4 p-4 border border-gray-300 flex items-center"
-              >
-                <div className="flex flex-col">
-                  <h5 className="font-bold mb-2">
-                    Titolo: {post.title} -{" "}
-                    <span className={post.published ? "" : "hidden"}>
-                      Pubblicato{" "}
-                    </span>
-                    <span className={post.published ? "hidden" : ""}>
-                      Non Pubblicato{" "}
-                    </span>
-                    <span
-                      className={`text-xl ${
-                        post.published ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      &#x2022;
-                    </span>
-                  </h5>
-                  {/* {<h5 className="font-bold">Categoria: {post.tags[0]}</h5>} */}
-                  <img
-                    className="w-40 mb-2"
-                    src={
-                      post.image
-                        ? post.image
-                        : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
-                    }
-                    alt=""
-                  />
-                  <h5 className="font-bold mb-2">Contenuto:</h5>
-                  <span className="max-w-full text-center">{post.content}</span>
-                  <Link
-                    className="font-bold border-2 border-black"
-                    to={`/posts/${post.id}`}
-                  >
-                    Show
-                  </Link>
-                </div>
-              </li>
-            ))}
-        </ul>
+        <div className="postList overflow-y-scroll border-8 border-white bg-white">
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
+            {postsList
+              .filter((post) => post.published)
+              .map((post) => (
+                <li key={post.id} className="flex-wrap m-1 flex items-center">
+                  <div className="flex flex-col">
+                    <Link className="font-bold" to={`/posts/${post.id}`}>
+                      <img
+                        className="w-full h-48 object-cover mb-2 hover:brightness-75"
+                        src={
+                          post.image
+                            ? post.image
+                            : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+                        }
+                        alt=""
+                      />
+                    </Link>
+                  </div>
+                </li>
+              ))}
+          </ul>
+        </div>
       </div>
     </>
   );

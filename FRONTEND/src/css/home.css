@@ -1,0 +1,5 @@
+.homepage{
+    background-image: url("../assets/ART0633-scaled.jpg");
+    background-position:bottom ;
+    height: calc(100vh - 90px);
+}

@@ -94,15 +94,13 @@ async function update(req, res) {
       throw new Error('Post non trovato');
     }
   
-    // Estrai gli ID delle categorie correlate
     const tagIds = existingPost.tags.map((tag) => ({ id: tag.id }));
   
-    // Assicurati che postToUpdate.tags sia definito e sia un array
     const newTagIds = Array.isArray(postToUpdate.tags)
       ? postToUpdate.tags.map((tagId) => ({ id: tagId }))
       : [];
   
-    // Aggiorna il post e le categorie correlate
+  
     const updatedPost = await prisma.post.update({
       where: {
         id: id,
@@ -112,9 +110,6 @@ async function update(req, res) {
         content: postToUpdate.content,
         image: postToUpdate.image,
         published: postToUpdate.published,
-        // Altri campi...
-  
-        // Aggiorna le categorie correlate
         tags: {
           disconnect: tagIds,
           connect: newTagIds,
