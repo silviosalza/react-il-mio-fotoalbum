@@ -30,23 +30,19 @@ function CreateForm() {
         tags: formData.category, // Adatta il nome del campo se necessario
       });
 
-      if (response.status === 201) {
-        setPostsList([...postsList, response.data]);
-        setFormData(initialFormData);
-      } else {
-        console.error(
-          "Errore durante la creazione del post:",
-          response.statusText
-        );
-      }
+      setPostsList([...postsList, response.data]);
+      setFormData(initialFormData);
     } catch (error) {
       console.error("Errore durante la gestione del form:", error);
+      if (error.response) {
+        // Stampa il messaggio di errore proveniente dal server
+        console.error("Messaggio di errore dal server:", error.response.data);
+      }
     }
   }
 
   function handleEdit(idToEdit) {
-    const newPosts = [...postsList];
-    const postToEdit = newPosts.find((post) => post.id === idToEdit);
+    const postToEdit = postsList.find((post) => post.id === idToEdit);
     setEditingId(idToEdit);
 
     if (postToEdit) {
@@ -54,8 +50,8 @@ function CreateForm() {
         title: postToEdit.title,
         content: postToEdit.content,
         image: postToEdit.image,
-        category: Array.isArray(postToEdit.category)
-          ? postToEdit.category.map((cat) => cat.id)
+        tags: Array.isArray(postToEdit.tags)
+          ? postToEdit.tags.map((tag) => tag.id)
           : [],
       });
     }
@@ -206,7 +202,9 @@ function CreateForm() {
                     type="checkbox"
                     value={cat.id}
                     onChange={handleField}
-                    checked={formData.category.includes(cat.id)}
+                    checked={
+                      formData.category && formData.category.includes(cat.id)
+                    }
                   />
                   {cat.name}
                 </label>

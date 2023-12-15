@@ -4,7 +4,7 @@ module.exports = {
         isString: true,
         notEmpty: true,
     },
-    content: {
+    image: {
         in: ["body"],
         isString: true,
         notEmpty: true,

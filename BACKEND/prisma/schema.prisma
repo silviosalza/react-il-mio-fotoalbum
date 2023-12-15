@@ -16,8 +16,8 @@ model Post {
 id Int @id @default(autoincrement())
 title String @db.VarChar(30)
 slug String? @db.VarChar(60)
-image String? @db.Text
-content String @db.Text
+image String @db.Text
+content String? @db.Text
 published Boolean @default(false)
 tags Tag[]
 //un post---una categoria---relazione one to many
