@@ -4,8 +4,10 @@ import Navbar from "../components/Navbar";
 export default function DefaultLayout() {
   return (
     <>
-      <Navbar></Navbar>
-      <Outlet></Outlet>
+      <div className="overflow-hidden">
+        <Navbar></Navbar>
+        <Outlet></Outlet>
+      </div>
     </>
   );
 }

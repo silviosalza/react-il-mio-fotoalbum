@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/postList.css";
+import Footer from "../components/Footer";
+
 export function PostsList() {
   const [postsList, setPostsList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,9 +33,9 @@ export function PostsList() {
     <>
       <div className=" container w-3/4 mx-auto">
         <input
-          className="w-full h-12 mb-5 bg-white bg-opacity-20"
+          className="text-white font-bold w-full h-12 mb-5 bg-white bg-opacity-50 placeholder-white::placeholder"
           type="text"
-          placeholder="Search by title"
+          placeholder="CHOOSE A NATION: JAPAN - KOREA - VIETNAM"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -61,6 +63,7 @@ export function PostsList() {
           </ul>
         </div>
       </div>
+      <Footer></Footer>
     </>
   );
 }
