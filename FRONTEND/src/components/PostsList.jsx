@@ -3,12 +3,20 @@ import { Link } from "react-router-dom";
 
 export function PostsList() {
   const [postsList, setPostsList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   let initiated = false;
 
   //gestisco chiamata API
   async function fetchData() {
-    const postsData = await (await fetch("http://localhost:3000/posts")).json();
-    setPostsList(postsData);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/posts/?title=${searchTerm}`
+      );
+      const postsData = await response.json();
+      setPostsList(postsData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }
   //all'avvio dell'applicazione fetchiamo i dati
   useEffect(() => {
@@ -17,11 +25,17 @@ export function PostsList() {
     }
     fetchData();
     initiated = true;
-  }, []);
+  }, [searchTerm]);
 
   return (
     <>
       <div className="my-5 container mx-auto border-2 border-black">
+        <input
+          type="text"
+          placeholder="Search by title"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <ul>
           {postsList
             .filter((post) => post.published)

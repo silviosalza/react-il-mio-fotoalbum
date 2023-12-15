@@ -53,7 +53,7 @@ function CreateForm() {
       title: postToEdit.title,
       content: postToEdit.content,
       image: postToEdit.image,
-      category: postToEdit.category,
+      category: postToEdit.category.map((cat) => cat.id),
     });
   }
   function handleField(e) {
@@ -146,7 +146,9 @@ function CreateForm() {
                     type="checkbox"
                     value={cat.id}
                     onChange={handleField}
-                    checked={formData.category.includes(cat.id)}
+                    checked={
+                      formData.category && formData.category.includes(cat.id)
+                    }
                   />
                   {cat.name}
                 </label>

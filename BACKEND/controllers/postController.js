@@ -4,7 +4,7 @@ const {validationResult} = require("express-validator")
 
 
 async function index(req,res){
-const postToFind = req.body
+const postToFind = req.query
 console.log(postToFind);
 //find many ritorna una promise, quindi faccio un await
 const data = await prisma.post.findMany({
