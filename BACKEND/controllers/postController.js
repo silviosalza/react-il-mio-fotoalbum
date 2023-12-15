@@ -55,11 +55,9 @@ const newPost = await prisma.post.create({
         image: postToAdd.image,
         published: postToAdd.published,
         tags: {
-            connect : postToAdd.tags.map(tagId =>({
-                "id": tagId
-            }))
+            connect: Array.isArray(postToAdd.tags) ? postToAdd.tags.map(tagId => ({ "id": tagId })) : [],
         },
-    },
+        },
     //specifico quali relazioni includere nella risposta
     include : {
         tags: {
@@ -74,26 +72,57 @@ return res.json(newPost)
 }
 
 
-async function update(req,res){
+async function update(req, res) {
     const id = parseInt(req.params.id);
     const postToUpdate = req.body;
-
-    const data = await prisma.post.findUnique({
-        where: {
-            id: id,
-        }
-    })
-    if(!data){
-        throw new Error ('Not Found')
+  
+    const existingPost = await prisma.post.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        tags: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+  
+    if (!existingPost) {
+      throw new Error('Post non trovato');
     }
-    const postUpdated = await prisma.post.update({
-       data: postToUpdate,
-       where: {
-        id: id
-       }
-    })
-   return res.json(postUpdated) 
-}
+  
+    // Estrai gli ID delle categorie correlate
+    const tagIds = existingPost.tags.map((tag) => ({ id: tag.id }));
+  
+    // Assicurati che postToUpdate.tags sia definito e sia un array
+    const newTagIds = Array.isArray(postToUpdate.tags)
+      ? postToUpdate.tags.map((tagId) => ({ id: tagId }))
+      : [];
+  
+    // Aggiorna il post e le categorie correlate
+    const updatedPost = await prisma.post.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: postToUpdate.title,
+        content: postToUpdate.content,
+        image: postToUpdate.image,
+        published: postToUpdate.published,
+        // Altri campi...
+  
+        // Aggiorna le categorie correlate
+        tags: {
+          disconnect: tagIds,
+          connect: newTagIds,
+        },
+      },
+    });
+  
+    return res.json(updatedPost);
+  }
 
 
 

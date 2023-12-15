@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function CreateForm() {
   const initialFormData = {
@@ -19,12 +20,27 @@ function CreateForm() {
     setFormData(initialFormData);
     setEditingId("");
   }
-  function handleFormSubmit(e) {
+
+  async function handleFormSubmit(e) {
     e.preventDefault(); //evita refresh pagina
     const newPosts = [...postsList];
     if (!editingId) {
+      const response = await axios.post(
+        "http://localhost:3000/posts",
+        formData
+      );
       //non posso modificare uno state, eseguo clonazione e aggionarmento (forma compatta)
-      setPostsList([...postsList, { ...formData, id: crypto.randomUUID() }]);
+      if (response.status === 201) {
+        // Se la chiamata è stata riuscita, aggiungi il nuovo post alla lista locale
+        setPostsList([...postsList, response.data]);
+        // Resetta il form
+        setFormData(initialFormData);
+      } else {
+        console.error(
+          "Errore durante la creazione del post:",
+          response.statusText
+        );
+      }
     } else {
       const postToEditIndex = newPosts.findIndex(
         (post) => post.id === editingId
@@ -41,21 +57,78 @@ function CreateForm() {
     //resetto form
     setFormData(initialFormData);
   }
-  function deletePost(idToRemove) {
-    const newPosts = [...postsList];
-    setPostsList(newPosts.filter((post) => post.id !== idToRemove));
+
+  async function deletePost(idToRemove) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/posts/${idToRemove}`
+      );
+
+      if (response.status === 200) {
+        // Rimuovi il post dalla tua interfaccia utente o esegui altre azioni necessarie
+        const newPosts = postsList.filter((post) => post.id !== idToRemove);
+        setPostsList(newPosts);
+      } else {
+        console.error(
+          "Errore nella cancellazione del post:",
+          response.statusText
+        );
+        // Gestisci eventuali errori
+      }
+    } catch (error) {
+      console.error(
+        "Errore nella richiesta di eliminazione del post:",
+        error.message
+      );
+      // Gestisci eventuali errori di rete o altri errori
+    }
   }
-  function editPost(idToEdit) {
+
+  function handleEdit(idToEdit) {
     const newPosts = [...postsList];
     const postToEdit = newPosts.find((post) => post.id === idToEdit);
     setEditingId(idToEdit);
-    setFormData({
-      title: postToEdit.title,
-      content: postToEdit.content,
-      image: postToEdit.image,
-      category: postToEdit.category.map((cat) => cat.id),
-    });
+
+    if (postToEdit) {
+      setFormData({
+        title: postToEdit.title,
+        content: postToEdit.content,
+        image: postToEdit.image,
+        category: Array.isArray(postToEdit.category)
+          ? postToEdit.category.map((cat) => cat.id)
+          : [],
+      });
+    }
   }
+
+  async function handleSave(idToEdit) {
+    // Effettua la chiamata PUT con Axios
+    const apiUrl = `http://localhost:3000/posts/${idToEdit}`;
+    const requestData = {
+      title: formData.title,
+      content: formData.content,
+      image: formData.image,
+      category: formData.category,
+    };
+
+    try {
+      const response = await axios.put(apiUrl, requestData);
+      const updatedPost = response.data;
+      console.log("Post aggiornato:", updatedPost);
+    } catch (error) {
+      console.error("Errore durante l'aggiornamento del post:", error);
+    } finally {
+      // Resetta lo stato o esegui altre operazioni necessarie
+      setEditingId(null);
+      setFormData({
+        title: "",
+        content: "",
+        image: "",
+        category: [],
+      });
+    }
+  }
+
   function handleField(e) {
     const { name, value, checked, type } = e.target;
 
@@ -96,6 +169,7 @@ function CreateForm() {
     fetchData();
     initiated = true;
   }, []);
+
   return (
     <>
       <main className="py-5 ">
@@ -168,9 +242,15 @@ function CreateForm() {
               type="submit"
               className="bg-green-300 hover:bg-green-400 rounded border-2 border-black font-bold"
             >
-              {editingId ? "Salva" : "Crea"}
+              Crea
             </button>
           </form>
+          <button
+            className="w-20 font-bold border-2 hover:bg-green-300 hover:text-white border-green-300"
+            onClick={() => handleSave(editingId)}
+          >
+            Salva
+          </button>
           <button
             type="button"
             className="my-1 w-1/2 bg-red-300 hover:bg-red-400 rounded border-2 border-black font-bold"
@@ -231,7 +311,7 @@ function CreateForm() {
                   </button>
                   <button
                     className="w-20 font-bold border-2 hover:bg-yellow-400 hover:text-white border-yellow-400"
-                    onClick={() => editPost(post.id)}
+                    onClick={() => handleEdit(post.id)}
                   >
                     Modifica
                   </button>
