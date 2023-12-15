@@ -22,14 +22,14 @@ function CreateForm() {
   }
 
   async function handleFormSubmit(e) {
-    e.preventDefault(); //evita refresh pagina
-    const newPosts = [...postsList];
-    if (!editingId) {
-      const response = await axios.post(
-        "http://localhost:3000/posts",
-        formData
-      );
-      //non posso modificare uno state, eseguo clonazione e aggionarmento (forma compatta)
+    e.preventDefault();
+    try {
+      console.log("formData:", formData);
+      const response = await axios.post("http://localhost:3000/posts", {
+        ...formData,
+        tags: formData.category, // Adatta il nome del campo se necessario
+      });
+
       if (response.status === 201) {
         setPostsList([...postsList, response.data]);
         setFormData(initialFormData);
@@ -39,23 +39,56 @@ function CreateForm() {
           response.statusText
         );
       }
-    } else {
-      const postToEditIndex = newPosts.findIndex(
-        (post) => post.id === editingId
-      );
-      newPosts[postToEditIndex] = {
-        ...postsList[postToEditIndex],
-        ...formData,
-        updatedAt: new Date(),
-      };
-      setPostsList(newPosts);
-      setEditingId("");
+    } catch (error) {
+      console.error("Errore durante la gestione del form:", error);
     }
-
-    //resetto form
-    setFormData(initialFormData);
   }
 
+  function handleEdit(idToEdit) {
+    const newPosts = [...postsList];
+    const postToEdit = newPosts.find((post) => post.id === idToEdit);
+    setEditingId(idToEdit);
+
+    if (postToEdit) {
+      setFormData({
+        title: postToEdit.title,
+        content: postToEdit.content,
+        image: postToEdit.image,
+        category: Array.isArray(postToEdit.category)
+          ? postToEdit.category.map((cat) => cat.id)
+          : [],
+      });
+    }
+  }
+
+  async function handleSave(idToEdit) {
+    const requestData = {
+      title: formData.title,
+      content: formData.content,
+      image: formData.image,
+      tags: formData.category,
+    };
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/posts/${idToEdit}`,
+        requestData
+      );
+      const updatedPost = response.data;
+      console.log("Post aggiornato:", updatedPost);
+    } catch (error) {
+      console.error("Errore durante l'aggiornamento del post:", error);
+    } finally {
+      // Resetta lo stato o esegui altre operazioni necessarie
+      setEditingId(null);
+      setFormData({
+        title: "",
+        content: "",
+        image: "",
+        category: [],
+      });
+    }
+  }
   async function deletePost(idToRemove) {
     try {
       const response = await axios.delete(
@@ -79,51 +112,6 @@ function CreateForm() {
         error.message
       );
       // Gestisci eventuali errori di rete o altri errori
-    }
-  }
-
-  function handleEdit(idToEdit) {
-    const newPosts = [...postsList];
-    const postToEdit = newPosts.find((post) => post.id === idToEdit);
-    setEditingId(idToEdit);
-
-    if (postToEdit) {
-      setFormData({
-        title: postToEdit.title,
-        content: postToEdit.content,
-        image: postToEdit.image,
-        category: Array.isArray(postToEdit.category)
-          ? postToEdit.category.map((cat) => cat.id)
-          : [],
-      });
-    }
-  }
-
-  async function handleSave(idToEdit) {
-    // Effettua la chiamata PUT con Axios
-    const apiUrl = `http://localhost:3000/posts/${idToEdit}`;
-    const requestData = {
-      title: formData.title,
-      content: formData.content,
-      image: formData.image,
-      tags: formData.category,
-    };
-
-    try {
-      const response = await axios.put(apiUrl, requestData);
-      const updatedPost = response.data;
-      console.log("Post aggiornato:", updatedPost);
-    } catch (error) {
-      console.error("Errore durante l'aggiornamento del post:", error);
-    } finally {
-      // Resetta lo stato o esegui altre operazioni necessarie
-      setEditingId(null);
-      setFormData({
-        title: "",
-        content: "",
-        image: "",
-        category: [],
-      });
     }
   }
 
@@ -218,9 +206,7 @@ function CreateForm() {
                     type="checkbox"
                     value={cat.id}
                     onChange={handleField}
-                    checked={
-                      formData.category && formData.category.includes(cat.id)
-                    }
+                    checked={formData.category.includes(cat.id)}
                   />
                   {cat.name}
                 </label>
