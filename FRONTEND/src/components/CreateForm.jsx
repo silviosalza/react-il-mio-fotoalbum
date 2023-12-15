@@ -31,9 +31,7 @@ function CreateForm() {
       );
       //non posso modificare uno state, eseguo clonazione e aggionarmento (forma compatta)
       if (response.status === 201) {
-        // Se la chiamata è stata riuscita, aggiungi il nuovo post alla lista locale
         setPostsList([...postsList, response.data]);
-        // Resetta il form
         setFormData(initialFormData);
       } else {
         console.error(
@@ -108,7 +106,7 @@ function CreateForm() {
       title: formData.title,
       content: formData.content,
       image: formData.image,
-      category: formData.category,
+      tags: formData.category,
     };
 
     try {

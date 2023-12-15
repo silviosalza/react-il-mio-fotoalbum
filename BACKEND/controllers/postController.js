@@ -139,11 +139,6 @@ await prisma.post.delete({
 
 
 
-
-
-
-
-
 module.exports = {
     index,
     show,
