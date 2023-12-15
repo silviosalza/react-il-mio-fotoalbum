@@ -46,6 +46,7 @@ if(!validation.isEmpty()){
     return res.status(422).json(validation.array())
 }
 const postToAdd = req.body
+const published = postToAdd.published === "false" ? false : true;
 console.log(postToAdd);
 const newPost = await prisma.post.create({
     data: {
@@ -53,7 +54,7 @@ const newPost = await prisma.post.create({
         slug: postToAdd.slug,
         content: postToAdd.content,
         image: postToAdd.image,
-        published: postToAdd.published,
+        published: published,
         tags: {
             connect: Array.isArray(postToAdd.tags) ? postToAdd.tags.map(tagId => ({ "id": tagId })) : [],
         },
