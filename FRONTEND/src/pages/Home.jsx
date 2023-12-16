@@ -4,9 +4,8 @@ import "../css/home.css";
 export default function Blog() {
   return (
     <>
-      <div className="homepage overflow-hidden">
-        <PostsList></PostsList>
-      </div>
+      <PostsList></PostsList>
+
       <Footer></Footer>
     </>
   );

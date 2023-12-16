@@ -153,7 +153,7 @@ function CreateForm() {
 
   return (
     <>
-      <main className="py-5 ">
+      <main className="py-5 bg-white ">
         <div className="container mx-auto">
           <h1 className="font-bold">
             {editingId ? "Modifica Articolo" : "Crea Articolo"}
@@ -191,7 +191,6 @@ function CreateForm() {
               value={formData.image}
               onChange={handleField}
             />
-
             <div className="flex flex-col gap-1">
               {tagsList.map((cat) => (
                 <label key={cat.id} className="block font-bold">
@@ -224,23 +223,26 @@ function CreateForm() {
               Crea
             </button>
           </form>
-          <button
-            className="w-20 font-bold border-2 hover:bg-green-300 hover:text-white border-green-300"
-            onClick={() => handleSave(editingId)}
-          >
-            Salva
-          </button>
-          <button
-            type="button"
-            className="my-1 w-1/2 bg-red-300 hover:bg-red-400 rounded border-2 border-black font-bold"
-            onClick={handleReset}
-          >
-            Annulla
-          </button>
+          <div className="flex flex-col">
+            <button
+              className="bg-green-300 my-1 w-1/2 hover:bg-green-400 rounded border-2 border-black font-bold"
+              onClick={() => handleSave(editingId)}
+            >
+              Salva
+            </button>
+            <button
+              type="button"
+              className=" w-1/2 bg-red-300 hover:bg-red-400 rounded border-2 border-black font-bold"
+              onClick={handleReset}
+            >
+              Annulla
+            </button>
+          </div>
         </div>
+
         {/*------------------------------------------------------------------- */}
-        <div className="my-5 container mx-auto border-2 border-black">
-          <ul>
+        <div className="my-5 grid grid-cols-3 container mx-auto border-2 border-black overflow-y-auto">
+          <ul className="flex ">
             {postsList.map((post) => (
               <li
                 key={post.id}

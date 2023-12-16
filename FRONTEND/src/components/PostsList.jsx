@@ -31,7 +31,7 @@ export function PostsList() {
 
   return (
     <>
-      <div className=" container w-3/4 mx-auto">
+      <div className="posts-container container w-3/4 mx-auto">
         <input
           className="text-white font-bold w-full h-12 mb-5 bg-white bg-opacity-50 placeholder-white::placeholder"
           type="text"
@@ -63,7 +63,6 @@ export function PostsList() {
           </ul>
         </div>
       </div>
-      <Footer></Footer>
     </>
   );
 }

@@ -1,5 +1,26 @@
+.login{
+    background-color: rgb(188, 181, 187);
+}
 .homepage{
     background-image: url("../assets/ART0633-scaled.jpg");
+    background-size:auto;
+    background-position:bottom;
+    height: calc(100vh - 390px);
+
+}
+
+footer{
+    background-image: url("../assets/G029016-scaled.jpg");
     background-position:bottom ;
-    height: calc(100vh - 90px);
+}
+
+.login-container{
+    height: calc(100vh - 81px);
+}
+.posts-container{
+    margin-top: 20rem;
+}
+
+.show-container{
+    height: calc(100vh - 81px);
 }

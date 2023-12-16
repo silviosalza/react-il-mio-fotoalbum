@@ -37,7 +37,7 @@ export default function Login() {
     <>
       <div className="container mx-auto px-4">
         {/* form di login */}
-        <div className="flex justify-center items-center h-screen">
+        <div className="login-container flex justify-center items-center">
           <div className="w-full max-w-md">
             <form
               className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4"
