@@ -10,8 +10,9 @@
 }
 
 footer{
-    background-image: url("../assets/G029016-scaled.jpg");
-    background-position:bottom ;
+    background-color: rgb(176, 197, 197);
+    
+    
 }
 
 .login-container{

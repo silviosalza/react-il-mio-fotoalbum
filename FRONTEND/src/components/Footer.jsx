@@ -1,6 +1,22 @@
 import React, { useState } from "react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+library.add(fas);
 
 const Footer = () => {
+  const Instagram = () => {
+    return <FontAwesomeIcon icon="fa-brands fa-square-instagram" />;
+  };
+
+  const Facebook = () => {
+    return <FontAwesomeIcon icon={["fab", "fa-facebook-square"]} />;
+  };
+
+  const Pinterest = () => {
+    return <FontAwesomeIcon icon={["fab", "fa-pinterest-square"]} />;
+  };
   const initialFormData = {
     email: "",
     content: "",
@@ -22,14 +38,12 @@ const Footer = () => {
   };
 
   return (
-    <footer className=" text-center mx-auto p-2 bg-gray-600 text-white mt-8">
-      <div className="w-1/2 grid grid-cols-2 mx-auto">
+    <footer className=" text-center mx-auto p-2 text-gray-600 mt-8">
+      <div className="w-3/4 grid grid-cols-2 mx-auto">
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <label htmlFor="email" className="mb-2">
-            Email:
-          </label>
           <input
             type="email"
+            placeholder="email@mail.it"
             id="email"
             name="email"
             value={formData.email}
@@ -37,33 +51,29 @@ const Footer = () => {
             className="p-2 mb-4 border rounded"
             required
           />
-
-          <label htmlFor="content" className="mb-2">
-            Messaggio:
-          </label>
           <textarea
             id="content"
             name="content"
+            placeholder="For collaboration and info..."
             value={formData.content}
             onChange={handleInputChange}
-            className="p-2 mb-4 border rounded"
+            className="p-2 mb-4 border rounded text-gray-600"
             rows="4"
             required
           ></textarea>
 
           <button
             type="submit"
-            className="bg-red-800 text-white px-4 py-2 rounded"
+            className="bg-red-800 text-white px-4 py-2 rounded font-bold"
           >
-            Invia Messaggio
+            SEND
           </button>
         </form>
         <div className="flex items-center justify-center">
           <ul className="flex justify-center">
-            <li>bla</li>
-            <li>bla</li>
-            <li>bla</li>
-            <li>bla</li>
+            <li>{Facebook}</li>
+            <li>{Instagram}</li>
+            <li>{Pinterest}</li>
           </ul>
         </div>
       </div>
