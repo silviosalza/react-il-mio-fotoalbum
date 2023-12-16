@@ -94,27 +94,22 @@ async function update(req, res) {
       throw new Error('Post non trovato');
     }
   
-    const tagIds = existingPost.tags.map((tag) => ({ id: tag.id }));
-  
-    const newTagIds = Array.isArray(postToUpdate.tags)
-      ? postToUpdate.tags.map((tagId) => ({ id: tagId }))
-      : [];
-  
-  
+  console.log(postToUpdate.tags);
     const updatedPost = await prisma.post.update({
       where: {
         id: id,
       },
       data: {
-        title: postToUpdate.title,
+        title: postToUpdate.title, 
         content: postToUpdate.content,
         image: postToUpdate.image,
         published: postToUpdate.published,
-        tags: {
-          disconnect: tagIds,
-          connect: newTagIds,
+        tags: { 
+          set: [],
+          connect: postToUpdate.tags.map(tagId => ({ id: tagId })),
         },
       },
+      include : { tags: true} 
     });
   
     return res.json(updatedPost);
