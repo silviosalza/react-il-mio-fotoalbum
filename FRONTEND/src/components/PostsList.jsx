@@ -33,7 +33,7 @@ export function PostsList() {
     <>
       <div className="posts-container container w-3/4 mx-auto">
         <input
-          className="text-white font-bold w-full h-12 mb-5 bg-white bg-opacity-50 placeholder-white::placeholder"
+          className="font-bold w-full h-12 homepage_input bg-white bg-opacity-50 placeholder-white::placeholder"
           type="text"
           placeholder="CHOOSE A NATION: JAPAN - KOREA - VIETNAM"
           value={searchTerm}

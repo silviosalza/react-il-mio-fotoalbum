@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:100,300,400);
+
 .login{
     background-color: rgb(188, 181, 187);
 }
@@ -25,3 +27,130 @@ footer{
 .show-container{
     height: calc(100vh - 81px);
 }
+
+.icon{
+    font-size: 3rem;
+}
+.instagram{
+    color: #c13584
+}
+
+/*message form homepage*/
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder {
+  color: #bbb5af;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::-moz-placeholder, textarea:focus::-moz-placeholder {
+  color: #bbb5af;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::placeholder, textarea::focus:placeholder {
+  color: #bbb5af;
+}
+
+input::-ms-placeholder, textarea::-ms-placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::-ms-placeholder, textarea:focus::-ms-placeholder {
+  color: #bbb5af;
+}
+
+/* on hover placeholder */
+
+
+  
+  
+  
+  #form {
+    position: relative;
+    width: 100%;
+    margin: 50px auto 100px auto;
+  }
+  
+  .homepage_input {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.875em;
+    width: 100%;
+    height: 50px;
+    padding: 0px 15px 0px 15px;
+    
+    background: transparent;
+    outline: none;
+    color: #726659;
+    
+    border: solid 1px #383838;
+    border-bottom: none;
+    
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  
+  .homepage_input:hover {
+    background: #363636;
+    color: #e2dedb;
+  }
+  
+  textarea {
+    width: 100%;
+    max-width: 470px;
+    height: 110px;
+    max-height: 110px;
+    padding: 15px;
+    background: transparent;
+    outline: none;
+    color: #404040;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.875em;
+    border: solid 1px #303030;
+    
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+  }
+  
+  textarea:hover {
+    color: #b3aca7;
+    background: #282828;
+  }
+  
+  #submit {
+    width: 100%;
+    
+    padding: 0;
+    margin: -5px 0px 0px 0px;
+    
+    font-family: 'Lato', sans-serif;
+    font-size: 0.875em;
+    color: #b3aca7;
+    
+    outline:none;
+    cursor: pointer;
+    
+    border: solid 2px #424242;
+  }
+  
+  #submit:hover {
+    color: #b3aca7;
+    background: #424242;
+  }

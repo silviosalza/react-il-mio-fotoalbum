@@ -2,20 +2,25 @@ import React, { useState } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faInstagramSquare,
+  faFacebookSquare,
+  faPinterestSquare,
+} from "@fortawesome/free-brands-svg-icons";
 
 library.add(fas);
 
 const Footer = () => {
   const Instagram = () => {
-    return <FontAwesomeIcon icon="fa-brands fa-square-instagram" />;
+    return <FontAwesomeIcon icon={faInstagramSquare} />;
   };
 
   const Facebook = () => {
-    return <FontAwesomeIcon icon={["fab", "fa-facebook-square"]} />;
+    return <FontAwesomeIcon icon={faFacebookSquare} />;
   };
 
   const Pinterest = () => {
-    return <FontAwesomeIcon icon={["fab", "fa-pinterest-square"]} />;
+    return <FontAwesomeIcon icon={faPinterestSquare} />;
   };
   const initialFormData = {
     email: "",
@@ -38,42 +43,40 @@ const Footer = () => {
   };
 
   return (
-    <footer className=" text-center mx-auto p-2 text-gray-600 mt-8">
-      <div className="w-3/4 grid grid-cols-2 mx-auto">
-        <form onSubmit={handleSubmit} className="flex flex-col">
+    <footer className="text-center mx-auto p-2 text-gray-600 mt-8">
+      <div className="w-3/4 grid grid-cols-2 mx-auto ">
+        <form id="form" className="topBefore" onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="email@mail.it"
+            className="homepage_input"
             id="email"
+            type="text"
+            placeholder="E-MAIL"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className="p-2 mb-4 border rounded"
-            required
           />
           <textarea
-            id="content"
-            name="content"
-            placeholder="For collaboration and info..."
-            value={formData.content}
+            id="message"
+            type="text"
+            placeholder="MESSAGE"
+            name="message"
+            value={formData.message}
             onChange={handleInputChange}
-            className="p-2 mb-4 border rounded text-gray-600"
-            rows="4"
-            required
           ></textarea>
-
-          <button
-            type="submit"
-            className="bg-red-800 text-white px-4 py-2 rounded font-bold"
-          >
-            SEND
-          </button>
+          <input id="submit" type="submit" value="GO!" />
         </form>
+
         <div className="flex items-center justify-center">
-          <ul className="flex justify-center">
-            <li>{Facebook}</li>
-            <li>{Instagram}</li>
-            <li>{Pinterest}</li>
+          <ul className="icon flex justify-center">
+            <li className="mr-4 text-blue-500">
+              <Facebook />
+            </li>
+            <li className="mr-4 instagram">
+              <Instagram />
+            </li>
+            <li className="text-red-600">
+              <Pinterest />
+            </li>
           </ul>
         </div>
       </div>

@@ -13,7 +13,7 @@ function NavbarLink({ href, children }) {
   return (
     <NavLink
       to={href}
-      className="block py-3 px-4 min-w-[80px] text-center rounded-md transition-all duration-300 hover:bg-gray-800 hover:text-primary"
+      className="block py-3 px-4 min-w-[80px] text-center rounded-md transition-all duration-300 hover:bg-gray-800"
     >
       {children}
     </NavLink>

@@ -86,6 +86,7 @@ function CreateForm() {
       });
     }
   }
+
   async function deletePost(idToRemove) {
     try {
       const response = await axios.delete(
@@ -223,6 +224,7 @@ function CreateForm() {
               Crea
             </button>
           </form>
+
           <div className="flex flex-col">
             <button
               className="bg-green-300 my-1 w-1/2 hover:bg-green-400 rounded border-2 border-black font-bold"
@@ -230,6 +232,7 @@ function CreateForm() {
             >
               Salva
             </button>
+
             <button
               type="button"
               className=" w-1/2 bg-red-300 hover:bg-red-400 rounded border-2 border-black font-bold"
