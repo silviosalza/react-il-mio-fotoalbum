@@ -1,7 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:100,300,400);
 
 .login{
-    background-color: rgb(188, 181, 187);
+  background-image: url("../assets/G029016-scaled.jpg");
+}
+.show{
+  background-image: url("../assets/G029016-scaled.jpg");
+  backdrop-filter: brightness(0.5);
+  height: calc(100vh);
 }
 .homepage{
     background-image: url("../assets/ART0633-scaled.jpg");
@@ -22,10 +27,6 @@ footer{
 }
 .posts-container{
     margin-top: 20rem;
-}
-
-.show-container{
-    height: calc(100vh - 81px);
 }
 
 .icon{

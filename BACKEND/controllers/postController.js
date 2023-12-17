@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const {validationResult} = require("express-validator")
+const fs = require('fs');
 
 
 async function index(req,res){
@@ -35,41 +36,52 @@ const id = parseInt(req.params.id)
 const data = await prisma.post.findUnique({
     where: {
         id: id,
-    }
+    },
+    include: {
+      tags: true,
+    },
 })
 return res.json(data)  
 }
 
-async function store(req,res){
-const validation = validationResult(req)
-if(!validation.isEmpty()){
-    return res.status(422).json(validation.array())
-}
-const postToAdd = req.body
-const published = postToAdd.published === "false" ? false : true;
-console.log(postToAdd);
-const newPost = await prisma.post.create({
+async function store(req, res) {
+  const validation = validationResult(req);
+  if (!validation.isEmpty()) {
+    return res.status(422).json(validation.array());
+  }
+
+  // Estrai i dati dal corpo della richiesta
+  const postToAdd = req.body;
+  const published = postToAdd.published == "true";
+  const tagsArray = JSON.parse(postToAdd.tags);
+
+  // Estrai il file caricato tramite Multer
+  const file = req.file;
+  const imageFileName = file ? file.filename : null;
+  console.log("Contenuto della richiesta:", req.body);
+
+  // Crea il nuovo post con l'upload dell'immagine
+  const newPost = await prisma.post.create({
+  
     data: {
-        title: postToAdd.title,
-        slug: postToAdd.slug,
-        content: postToAdd.content,
-        image: postToAdd.image,
-        published: published,
-        tags: {
-            connect: Array.isArray(postToAdd.tags) ? postToAdd.tags.map(tagId => ({ "id": tagId })) : [],
+      title: postToAdd.title,
+      content: postToAdd.content,
+      published: published,
+      image: imageFileName || null,
+      tags: {
+        connect: Array.isArray(tagsArray) ? tagsArray.map(tagId => ({ "id": tagId })) : [],
+      },
+    },
+    include: {
+      tags: {
+        select: {
+          name: true,
         },
-        },
-    //specifico quali relazioni includere nella risposta
-    include : {
-        tags: {
-            select:{
-                name: true
-            }
-        }
-        
-    }
-})
-return res.json(newPost)  
+      },
+    },
+  });
+  console.log(newPost);
+  return res.json(newPost);
 }
 
 

@@ -8,6 +8,7 @@ const app = express();
 const cors = require("cors");
 
 app.use(express.json());
+app.use(express.static("uploads"));
 app.use(cors({
     origin: ["http://localhost:5174" , "http://localhost:5173"]}
 ))

@@ -17,6 +17,7 @@ export function Post() {
     const postsData = await (
       await fetch("http://localhost:3000/posts/" + id)
     ).json();
+    console.log(postsData);
     setPostsList(postsData);
   }
   //all'avvio dell'applicazione fetchiamo i dati
@@ -31,41 +32,32 @@ export function Post() {
   return (
     <>
       {postsList.published && (
-        <div className="show-container w-full h-full container mx-auto">
+        <div className="show-container container mx-auto text-white">
           <ul>
-            <li
-              key={postsList.id}
-              className="flex-wrap mb-4 p-4 flex items-center"
-            >
+            <li key={postsList.id} className="flex-wrap  flex items-center">
               <div className="flex flex-col">
                 <img
                   className="w-full h-full mb-2"
-                  src={
-                    postsList.image
-                      ? postsList.image
-                      : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
-                  }
+                  src={"http://localhost:3000/" + postsList.image}
                   alt=""
                 />
-                <h5 className="font-bold mb-2">
-                  Titolo: {postsList.title} -{" "}
-                  <span className={postsList.published ? "" : "hidden"}>
-                    Pubblicato{" "}
-                  </span>
-                  <span className={postsList.published ? "hidden" : ""}>
-                    Non Pubblicato{" "}
-                  </span>
-                  <span
-                    className={`text-xl ${
-                      postsList.published ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    &#x2022;
-                  </span>
-                </h5>
-                {/* {<h5 className="font-bold">Categoria: {postsList.tags}</h5>} */}
-                <h5 className="font-bold mb-2">Contenuto:</h5>
-                <span className="max-w-full text-center">
+                <span>
+                  <span className="font-bold">TITOLO -</span> {postsList.title}
+                </span>
+                <span className="gap-1 flex">
+                  <span className="font-bold">CATEGORIE -</span>
+                  {postsList.tags && postsList.tags.length > 0 ? (
+                    <ul className="flex gap-2">
+                      {postsList.tags.map((tag) => (
+                        <li key={tag.id}>{tag.name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    "Nessuna tag"
+                  )}
+                </span>
+                <span>
+                  <span className="font-bold">DESCRIZIONE -</span>{" "}
                   {postsList.content}
                 </span>
               </div>
