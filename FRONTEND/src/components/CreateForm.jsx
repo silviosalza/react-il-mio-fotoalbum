@@ -257,11 +257,11 @@ function CreateForm() {
                 }))
               }
             />
-            <div className="flex flex-wrap gap-1">
+            <div className="flex gap-5">
               {tagsList.map((cat) => (
                 <label key={cat.id} className="block font-bold">
                   <input
-                    className="mr-3"
+                    className=""
                     name="tags"
                     type="checkbox"
                     value={cat.id}
@@ -285,7 +285,7 @@ function CreateForm() {
                 onChange={handleField}
               />
             </label>
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-1">
               <button
                 type="submit"
                 className="bg-green-300 hover:bg-green-400 rounded border-2 border-black font-bold"
@@ -294,7 +294,7 @@ function CreateForm() {
               </button>
               <div className="flex flex-col gap-1">
                 <button
-                  className="bg-green-300 hover:bg-green-400 rounded border-2 border-black font-bold"
+                  className="bg-yellow-300 hover:bg-yellow-500 rounded border-2 border-black font-bold"
                   onClick={() => handleSave(editingId)}
                 >
                   Salva
@@ -319,7 +319,7 @@ function CreateForm() {
                 <th className="p-2 border border-gray-300">Titolo</th>
                 <th className="p-2 border border-gray-300">Immagine</th>
                 <th className="p-2 border border-gray-300">Contenuto</th>
-                <th className="p-2 border border-gray-300">Tags</th>
+                <th className="p-2 border border-gray-300">Categorie</th>
                 <th className="p-2 border border-gray-300">Azioni</th>
               </tr>
             </thead>

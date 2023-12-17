@@ -44,7 +44,7 @@ export function PostsList() {
             {postsList
               .filter((post) => post.published)
               .map((post) => (
-                <li key={post.id} className="flex-wrap m-1 flex items-center">
+                <li key={post.id} className="flex items-center justify-center">
                   <div className="flex flex-col">
                     <Link className="font-bold" to={`/posts/${post.id}`}>
                       <img
