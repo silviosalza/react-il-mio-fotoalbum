@@ -42,7 +42,7 @@ function CreateForm() {
         );
         console.log(formDataToSend);
 
-        // Aggiorna lo stato dei post solo dopo una risposta positiva dal server
+        // Aggiorno lo stato dei post solo dopo una risposta positiva dal server
         setPostsList([...postsList, response.data]);
         setFormData(initialFormData);
       } catch (error) {
@@ -62,10 +62,12 @@ function CreateForm() {
     console.log("Dati del post da editare:", postToEdit);
 
     if (postToEdit) {
+      console.log("Tags del post:", postToEdit.tags);
       setFormData({
         title: postToEdit.title,
         content: postToEdit.content,
-        image: postToEdit.image,
+        image: "",
+        published: postToEdit.published,
         tags: Array.isArray(postToEdit.tags)
           ? postToEdit.tags.map((tag) => tag.id)
           : [],
@@ -74,31 +76,40 @@ function CreateForm() {
   }
 
   async function handleSave(idToEdit) {
-    const requestData = {
-      title: formData.title,
-      content: formData.content,
-      image: formData.image,
-      tags: formData.tags,
-    };
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("content", formData.content);
+    formDataToSend.append("published", formData.published);
+    if (formData.image instanceof File) {
+      formDataToSend.append("image", formData.image);
+    }
+    formData.tags.forEach((tag, index) => {
+      formDataToSend.append("tags[]", formData.tags[index]);
+    });
+    console.log(formData.tags);
 
     try {
       const response = await axios.put(
         `http://localhost:3000/posts/${idToEdit}`,
-        requestData
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       const updatedPost = response.data;
       console.log("Post aggiornato:", updatedPost);
+
+      setPostsList((prevPostsList) =>
+        prevPostsList.map((post) => (post.id === idToEdit ? updatedPost : post))
+      );
     } catch (error) {
       console.error("Errore durante l'aggiornamento del post:", error);
     } finally {
-      // Resetta lo stato o esegui altre operazioni necessarie
+      // Resetta lo stato
       setEditingId(null);
-      setFormData({
-        title: "",
-        content: "",
-        image: "",
-        tags: [],
-      });
+      setFormData(initialFormData);
     }
   }
 
@@ -188,6 +199,7 @@ function CreateForm() {
     setPostsList(postsData);
     const tagsData = await (await fetch("http://localhost:3000/tags")).json();
     setTagsList(tagsData);
+    console.log(postsData);
   }
 
   function getImgUrl(post) {
@@ -216,7 +228,7 @@ function CreateForm() {
       <main className="py-5 bg-white ">
         <div className="container mx-auto">
           <h1 className="font-bold">
-            {editingId ? "Modifica Articolo" : "Crea Articolo"}
+            {editingId ? "Modifica Post" : "Crea Post"}
           </h1>
           <form
             action="http://localhost:3000/posts"
@@ -230,7 +242,7 @@ function CreateForm() {
               className="rounded border-2 border-black"
               type="text"
               name="title"
-              placeholder="Inserisci il titolo dell'articolo"
+              placeholder="Inserisci il titolo della foto"
               value={formData.title}
               onChange={handleField}
             />
@@ -244,7 +256,7 @@ function CreateForm() {
               value={formData.content}
               onChange={handleField}
             ></textarea>
-            <label htmlFor="post_image">Immagine di copertina:</label>
+            <label htmlFor="post_image">Foto:</label>
             <input
               className="rounded border-2 border-black"
               type="file"
@@ -285,30 +297,30 @@ function CreateForm() {
                 onChange={handleField}
               />
             </label>
+            <button
+              type="submit"
+              className="bg-green-300 hover:bg-green-400 rounded border-2 border-black font-bold"
+            >
+              Crea
+            </button>
+          </form>
+          <div className="flex flex-col gap-1 w-1/2 mt-1">
             <div className="flex flex-col gap-1">
               <button
-                type="submit"
-                className="bg-green-300 hover:bg-green-400 rounded border-2 border-black font-bold"
+                className="bg-yellow-300 hover:bg-yellow-500 rounded border-2 border-black font-bold"
+                onClick={() => handleSave(editingId)}
               >
-                {editingId ? "Modifica" : "Crea"}
+                Salva
               </button>
-              <div className="flex flex-col gap-1">
-                <button
-                  className="bg-yellow-300 hover:bg-yellow-500 rounded border-2 border-black font-bold"
-                  onClick={() => handleSave(editingId)}
-                >
-                  Salva
-                </button>
-                <button
-                  type="button"
-                  className="bg-red-300 hover:bg-red-400 rounded border-2 border-black font-bold"
-                  onClick={handleReset}
-                >
-                  Annulla
-                </button>
-              </div>
+              <button
+                type="button"
+                className="bg-red-300 hover:bg-red-400 rounded border-2 border-black font-bold"
+                onClick={handleReset}
+              >
+                Annulla
+              </button>
             </div>
-          </form>
+          </div>
         </div>
 
         {/*------------------------------------------------------------------- */}

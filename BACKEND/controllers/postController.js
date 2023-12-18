@@ -21,7 +21,8 @@ const data = await prisma.post.findMany({
     include:{
         tags: {
             select:{
-                name: true
+                name: true,
+                id: true
             }
         }
     }
@@ -87,6 +88,7 @@ async function store(req, res) {
 
 async function update(req, res) {
     const id = parseInt(req.params.id);
+    console.log("Dati della richiesta client:", req.body , req.params);
     const postToUpdate = req.body;
   
     const existingPost = await prisma.post.findUnique({
@@ -106,7 +108,7 @@ async function update(req, res) {
       throw new Error('Post non trovato');
     }
   
-  console.log(postToUpdate.tags);
+    console.log("Il post da aggiornare" , postToUpdate);
     const updatedPost = await prisma.post.update({
       where: {
         id: id,
@@ -115,13 +117,20 @@ async function update(req, res) {
         title: postToUpdate.title, 
         content: postToUpdate.content,
         image: postToUpdate.image,
-        published: postToUpdate.published,
+        published: postToUpdate.published === "true",
         tags: { 
           set: [],
-          connect: postToUpdate.tags.map(tagId => ({ id: tagId })),
+          connect: Array.isArray(postToUpdate.tags) ? postToUpdate.tags.map(tagId => ({ "id": parseInt(tagId) })) : [],
         },
       },
-      include : { tags: true} 
+      include: {
+        tags: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      }, 
     });
   
     return res.json(updatedPost);

@@ -25,7 +25,7 @@ router.get("/:id", postController.show)
 //rotta store
 router.post("/",/*authHandler*/upload.single('image'), checkSchema(postCreate),postController.store)
 //rotta update
-router.put("/:id",/*authHandler*/ postController.update)
+router.put("/:id",/*authHandler*/upload.single('image'), postController.update)
 //rotta delete
 router.delete("/:id",/*authHandler*/ postController.destroy)
 

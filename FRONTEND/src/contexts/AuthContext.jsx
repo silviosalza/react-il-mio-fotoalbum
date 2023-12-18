@@ -48,9 +48,9 @@ export function AuthProvider({ children }) {
     const user = await new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          name: "Anna",
-          surname: "Bianchi",
-          email: "anna.bianchi@gmail.com",
+          name: "Victor",
+          surname: "Morante",
+          email: "victor.morante@gmail.com",
         });
       });
     });
