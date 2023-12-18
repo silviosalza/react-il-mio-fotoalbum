@@ -143,14 +143,6 @@ function CreateForm() {
     const { name, value, checked, type } = e.target;
     console.log(name, value, checked, type);
 
-    // if (name === "published") {
-    //   if (checked) {
-    //     setFormData((current) => ({ ...current, [name]: true }));
-    //   } else {
-    //     setFormData((current) => ({ ...current, [name]: false }));
-    //   }
-    // }
-
     if (name === "published") {
       if (checked) {
         setFormData((current) => {
