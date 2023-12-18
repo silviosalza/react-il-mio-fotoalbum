@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 async function seedDatabase() {
   try {
-    // Popolo il database con dati specifici e immagini dalla cartella uploads
     const postsData = [
       {
         title: 'Titolo 1',

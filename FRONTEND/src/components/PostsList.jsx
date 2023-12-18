@@ -33,9 +33,9 @@ export function PostsList() {
     <>
       <div className="posts-container container w-3/4 mx-auto">
         <input
-          className="font-bold w-full h-12 homepage_input bg-white bg-opacity-50 placeholder-white::placeholder"
+          className="mb-5 font-bold w-full h-12 homepage_input bg-white bg-opacity-50 placeholder-white::placeholder"
           type="text"
-          placeholder="CHOOSE A NATION: JAPAN - KOREA - VIETNAM"
+          placeholder="Cerca per titolo"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
